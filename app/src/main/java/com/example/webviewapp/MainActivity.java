@@ -1,6 +1,9 @@
 package com.example.webviewapp;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Trace;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,12 +30,35 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Add your code for showing internal web page here
     }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //WebView webView = new WebView(this);
+        //setContentView(webView);
+
+        final WebView webView = findViewById(R.id.myWebView);
+        webView.getSettings().setJavaScriptEnabled(true);
+
+        webView.addJavascriptInterface(this, "Android");
+
+        webView.loadUrl("file:///android_asset/svg.html");
+
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                webView.evaluateJavascript("showMessage('myMessage');", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                        Log.d("MainActivity", "hej: " + value);
+                    }
+                });
+            }
+        });
 
         /*
         * Rename your App. Tip: Values->Strings
@@ -51,15 +84,12 @@ public class MainActivity extends AppCompatActivity {
            showing your App. One (1) screenshot showing your internal web page and
            one (1) screenshot showing your external web page.
         */
+    }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    @JavascriptInterface
+    public void showToast(String toast) {
+        Log.d("MainActivity", "myToast: "+ toast);
+        Toast.makeText((Context)this, toast, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The HTML5 Herald</title>
+  <style>
+    @keyframes myRectSpin {
+      0% {
+        transform:  
+          translate(0px, -25px) 
+          rotate(0deg);
+      }
+      50% {
+        transform: 
+          translate(0px, 25px)
+          rotate(180deg);
+      }
+      100% {
+        transform: 
+          translate(0px, -25px)
+          rotate(360deg);
+      }
+    }
+    #myThing {
+      
+      transition: transform 5s;
+      transform: translate(200px, 200px) rotate(30deg);
+    }
+    #myThing:hover {
+      transition: transform 1s;
+      transform: translate(600px, 200px);
+    }
+    #rect1, #rect2 {
+      animation: myRectSpin 2s linear infinite;
+    }
+    #rect1 {
+      animation-delay: -1s;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    function showMessage(text) {
+      document.getElementById('myDiv').innerHTML = text;
+      return text;
+    }
+
+    function showAndroidToast(toast) {
+        Android.showToast(toast);
+    }
+
+  </script>
+  <div id="myDiv">hej</div>
+  <img src="img/smiley.png" onClick="showAndroidToast('wiee');">
+  <svg width="500" height="500" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+    
+    <defs>
+      <linearGradient id="backgroundGradient" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="40%" stop-color="red" />
+        <stop offset="50%" stop-color="black" />
+        <stop offset="60%" stop-color="blue" />
+      </linearGradient>
+    </defs>
+
+    <!-- 
+      Everything inside the anchor group is regarded as a single entity, which inner workings we do not really care about. It's a black box of a complete entity.
+      Likewise the entity should only have local knowledge centered arround origo.
+      To move the entity the anchor should be moved, unless the movement is regarded as a local movement.
+
+      Setting it up in this way makes entities easily re-usable while keeping all their data intact. // todo :: check if they can be made as a define, if it can, maybe faster
+
+      // todo :: check if illustrator can easily reset an objects position to parents origo. If so "parts" (anchor+entity) can be set to their correct spot and still be exported correctly.
+    -->
+
+    <g id="myThing">
+      <g id="my_behind_rect_anchor" fill="url(#backgroundGradient)">  <!-- These anchor points should be movable in illustrator so you can export correct position -->
+        <rect id="my_behind_rect" x="-150" y="-150" width="300" height="300"/>  <!-- These parts must be in origo -->
+      </g>
+      <g id="myDoubleRect" fill="green"> 
+        <g id="rect1_anchor" transform="translate(-75,75)">  <!-- These anchor points should be movable in illustrator so you can export correct position -->
+          <rect id="rect1" x="-50" y="-50" width="100" height="100"/> <!-- These parts must be in origo -->
+        </g>
+        <g id="rect2_anchor" transform="translate(75,75)" >  <!-- These anchor points should be movable in illustrator so you can export correct position -->
+          <rect id="rect2" x="-50" y="-50" width="100" height="100"/>  <!-- These parts must be in origo -->
+        </g>
+      </g>
+    </g>
+
+  </svg>
+</body>
+</html>
