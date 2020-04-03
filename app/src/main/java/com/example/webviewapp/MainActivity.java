@@ -28,12 +28,15 @@ import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    public WebView webView = null;
     public void showExternalWebPage(){
         // TODO: Add your code for showing external web page here
+        webView.loadUrl("https://wwwlab.iit.his.se/lofu/svgtest/svg.html");
     }
 
     public void showInternalWebPage(){
         // TODO: Add your code for showing internal web page here
+        webView.loadUrl("file:///android_asset/svg.html");
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +47,9 @@ public class MainActivity extends AppCompatActivity {
         //WebView webView = new WebView(this);
         //setContentView(webView);
 
-        final WebView webView = findViewById(R.id.myWebView);
+        webView = findViewById(R.id.myWebView);
         webView.getSettings().setJavaScriptEnabled(true);
-
         webView.addJavascriptInterface(this, "Android");
-
-        webView.loadUrl("file:///android_asset/svg.html");
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,11 +113,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_external_web) {
+            showExternalWebPage();
             Log.d("==>","Will display external web page");
             return true;
         }
 
         if (id == R.id.action_internal_web) {
+            showInternalWebPage();
             Log.d("==>","Will display internal web page");
             return true;
         }
